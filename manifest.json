@@ -1,18 +1,25 @@
 {
-  "name": "FieldQuote",
-  "short_name": "FieldQuote",
-  "description": "Instant on-site voice quoting, itemized estimates, and homeowner e-signatures for trade contractors.",
-  "start_url": "./",
+  "id": "https://francislandscapefle-hub.github.io/fieldquote/",
+  "name": "TradeClose Pro™",
+  "short_name": "TradeClose",
+  "description": "On-site estimating, optical takeoff, and instant deal closing engine for trade contractors.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#10b981",
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
+  "background_color": "#090d16",
+  "theme_color": "#059669",
   "orientation": "any",
-  "dir": "ltr",
-  "lang": "en",
   "categories": [
     "business",
-    "productivity"
+    "productivity",
+    "utilities"
   ],
   "icons": [
     {
@@ -22,22 +29,54 @@
       "purpose": "any"
     },
     {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
       "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "icon-512.png",
+      "src": "icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Estimate",
+      "short_name": "Estimate",
+      "description": "Start a new on-site voice estimate",
+      "url": "./index.html#builder",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Client Proposal",
+      "short_name": "Proposal",
+      "description": "View proposal and client e-signature pad",
+      "url": "./index.html#preview",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }
