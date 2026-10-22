@@ -1178,27 +1178,172 @@ create policy "Public can view individual quotes" on public.quotes
       document.body.removeChild(ta);
     }
 
-    // HTML Escaper for Safety
+  // HTML Escaper for Safety
     function escapeHtml(str) {
       if (!str) return '';
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    // Initial App Startup
-  renderBuilderTable();
+    // ==========================================
+    // NATIVE PUSH & IN-APP NOTIFICATION ENGINE
+    // ==========================================
+    function updateNotificationUI() {
+      const dot = document.getElementById('header-notif-dot');
+      const text = document.getElementById('header-notif-text');
+      const btnLabel = document.getElementById('notif-btn-label');
+      const statusLabel = document.getElementById('notif-permission-status');
 
-  // Register Service Worker for PWA
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then(reg => console.log('Service Worker registered successfully:', reg))
-        .catch(err => console.error('Service Worker registration failed:', err));
-    });
-  }
-</script>
-</body>
-</html>
+      if (!('Notification' in window)) {
+        if (text) text.textContent = 'Alerts Unsupported';
+        if (statusLabel) statusLabel.textContent = 'Not Supported';
+        return;
+      }
 
+      if (Notification.permission === 'granted') {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+        if (text) text.textContent = 'Alerts Active';
+        if (btnLabel) btnLabel.textContent = '✓ Alerts Enabled';
+        if (statusLabel) statusLabel.textContent = 'Active (Live)';
+      } else if (Notification.permission === 'denied') {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-red-400';
+        if (text) text.textContent = 'Alerts Blocked';
+        if (btnLabel) btnLabel.textContent = 'Alerts Blocked';
+        if (statusLabel) statusLabel.textContent = 'Blocked in Settings';
+      } else {
+        if (dot) dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
+        if (text) text.textContent = 'Enable Alerts';
+        if (btnLabel) btnLabel.textContent = 'Enable Phone Alerts';
+        if (statusLabel) statusLabel.textContent = 'Tap to Enable';
+      }
+    }
+
+    function requestNotificationPermission(onSuccess) {
+      if (!('Notification' in window)) {
+        showToast('Push notifications not supported on this browser mode.', 'info');
+        return;
+      }
+
+      Notification.requestPermission().then((perm) => {
+        updateNotificationUI();
+        if (perm === 'granted') {
+          showToast('Phone notifications enabled! You will receive live deal alerts.');
+          if (onSuccess) onSuccess();
+        } else if (perm === 'denied') {
+          showToast('Alerts blocked. Change permission in browser site settings.', 'info');
+        }
+      });
+    }
+
+    function triggerNativeNotification(title, body) {
+      showToast(title + ': ' + body, 'success');
+
+      if ('vibrate' in navigator) {
+        navigator.vibrate([200, 100, 200]);
+      }
+
+      if ('Notification' in window && Notification.permission === 'granted') {
+        if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+          navigator.serviceWorker.ready.then((reg) => {
+            reg.showNotification(title, {
+              body: body,
+              icon: 'icon-192.png',
+              badge: 'icon-192.png',
+              vibrate: [200, 100, 200],
+              tag: 'fieldquote-alert-' + Date.now()
+            });
+          }).catch(() => {
+            new Notification(title, { body: body, icon: 'icon-192.png' });
+          });
+        } else {
+          new Notification(title, { body: body, icon: 'icon-192.png' });
+        }
+      }
+    }
+
+    // Attach Event Listeners
+    const btnToggleNotifs = document.getElementById('btn-toggle-notifs');
+    if (btnToggleNotifs) {
+      btnToggleNotifs.addEventListener('click', () => {
+        requestNotificationPermission();
+      });
+    }
+
+    const headerNotifBtn = document.getElementById('header-notif-btn');
+    if (headerNotifBtn) {
+      headerNotifBtn.addEventListener('click', () => {
+        requestNotificationPermission();
+      });
+    }
+
+    // Demo Alert 1: Quote Viewed
+    const btnTestView = document.getElementById('btn-test-view-alert');
+    if (btnTestView) {
+      btnTestView.addEventListener('click', () => {
+        const fire = () => {
+          const calc = calculateTotals();
+          triggerNativeNotification(
+            '👀 Proposal Viewed!',
+            appState.customer.name + ' is viewing your estimate for $' + calc.finalTotal.toFixed(2) + ' right now!'
+          );
+        };
+
+        if ('Notification' in window && Notification.permission !== 'granted') {
+          requestNotificationPermission(fire);
+        } else {
+          fire();
+        }
+      });
+    }
+
+    // Demo Alert 2: Deal Closed / E-Signed
+    const btnTestSigned = document.getElementById('btn-test-signed-alert');
+    if (btnTestSigned) {
+      btnTestSigned.addEventListener('click', () => {
+        const fire = () => {
+          const calc = calculateTotals();
+          triggerNativeNotification(
+            '✍️ Deal Closed & E-Signed!',
+            appState.customer.name + ' signed Quote #' + appState.quoteNumber + ' ($' + calc.finalTotal.toFixed(2) + '). Deposit due: $' + calc.depositAmount.toFixed(2)
+          );
+        };
+
+        if ('Notification' in window && Notification.permission !== 'granted') {
+          requestNotificationPermission(fire);
+        } else {
+          fire();
+        }
+      });
+    }
+
+    // Service Worker Registration for Offline & Push Notifications
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then((reg) => {
+            console.log('ServiceWorker registered with scope:', reg.scope);
+            updateNotificationUI();
+          })
+          .catch((err) => {
+            console.warn('ServiceWorker registration error:', err);
+          });
+      });
+    }
+
+    // Hook Homeowner E-Signature button to fire live alert
+    const btnSaveSig = document.getElementById('btn-save-sig');
+    if (btnSaveSig) {
+      btnSaveSig.addEventListener('click', () => {
+        const calc = calculateTotals();
+        triggerNativeNotification(
+          '✍️ Proposal Authorized & E-Signed!',
+          appState.customer.name + ' just approved Quote #' + appState.quoteNumber + ' ($' + calc.finalTotal.toFixed(2) + '). Ready to schedule!'
+        );
+      });
+    }
+
+    updateNotificationUI();
+
+    renderBuilderTable();
   </script>
 </body>
 </html>
