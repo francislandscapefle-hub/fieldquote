@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.francislandscapefle_hub.twa",
+        "sha256_cert_fingerprints": ["D1:6C:3D:ED:10:CD:91:E0:F3:9F:DA:EC:BB:4E:1F:A8:3C:70:0F:98:FC:F0:50:7C:09:48:66:95:19:EC:48:F3"]
+      }
+    }]
