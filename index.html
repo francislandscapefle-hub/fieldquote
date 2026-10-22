@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="theme-color" content="#10b981">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FieldQuote - Rapid Voice-to-Estimate App for Contractors</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1180,7 +1185,20 @@ create policy "Public can view individual quotes" on public.quotes
     }
 
     // Initial App Startup
-    renderBuilderTable();
+  renderBuilderTable();
+
+  // Register Service Worker for PWA
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('Service Worker registered successfully:', reg))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    });
+  }
+</script>
+</body>
+</html>
+
   </script>
 </body>
 </html>
