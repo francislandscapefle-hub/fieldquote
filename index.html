@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
-  <meta name="theme-color" content="#10b981">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#059669">
   <title>FieldQuote - Rapid Voice-to-Estimate App for Contractors</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -72,6 +71,14 @@
           <span>Blueprint</span>
         </button>
       </nav>
+
+      <!-- Notification Quick Status -->
+      <div class="hidden md:flex items-center gap-2 pl-2 border-l border-slate-700/80">
+        <button id="header-notif-btn" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-700/80 hover:bg-slate-700 text-slate-300 flex items-center gap-1.5 transition-all border border-slate-600">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse" id="header-notif-dot"></span>
+          <span id="header-notif-text">Enable Alerts</span>
+        </button>
+      </div>
     </div>
   </header>
 
@@ -453,6 +460,24 @@
           <div class="text-right text-[10px] text-slate-500 mt-1">Delivered via your mobile carrier • 100% open rate</div>
         </div>
 
+                <!-- Cloud Database Real-Time Status -->
+        <div class="p-3.5 rounded-xl bg-slate-900 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></div>
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-2">
+                <span>Supabase Cloud Database Connected</span>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-semibold">PostgreSQL Live</span>
+              </div>
+              <div class="text-[11px] text-slate-400" id="cloud-sync-status-text">Ready to sync Quote #FQ-2026-1049</div>
+            </div>
+          </div>
+          <button id="btn-manual-sync" type="button" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-all shadow-sm">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+            <span>Sync Quote to Cloud</span>
+          </button>
+        </div>
+
         <!-- Dispatch Action Buttons -->
         <div class="space-y-3">
           <!-- Native Deep Link SMS Button -->
@@ -477,6 +502,40 @@
         <div class="pt-4 border-t border-slate-700/60 flex items-center justify-between text-xs text-slate-400">
           <span>Target Close Time: Under 2 hours</span>
           <span class="text-emerald-400 font-semibold">Standard Contractor Win Rate: +38%</span>
+        </div>
+      </section>
+
+      <!-- Real-Time Push Notification Engine Card -->
+      <section class="max-w-2xl mx-auto bg-slate-800/80 rounded-2xl border border-slate-700 p-6 sm:p-8 shadow-xl space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Live Push Notification Engine
+            </div>
+            <h2 class="text-lg font-bold text-white tracking-tight">Instant Contractor Deal & View Alerts</h2>
+            <p class="text-xs text-slate-300">Get native lock-screen phone alerts the instant a homeowner views or approves a quote.</p>
+          </div>
+          <button id="btn-toggle-notifs" class="px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white shadow-md">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+            <span id="notif-btn-label">Enable Phone Alerts</span>
+          </button>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900 border border-slate-700/80 space-y-3">
+          <div class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center justify-between">
+            <span>Test In-Field Sales Alerts (Live Demo):</span>
+            <span class="text-emerald-400 font-mono text-[11px]" id="notif-permission-status">Status: Ready</span>
+          </div>
+          <p class="text-[11px] text-slate-400 leading-relaxed">Tap either trigger below to test how FieldQuote alerts you directly on your lock screen while you are driving between jobs:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button id="btn-test-view-alert" class="py-2.5 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center justify-center gap-2 border border-slate-600 transition-colors active:scale-95">
+              <span>👀 Test "Quote Viewed" Alert</span>
+            </button>
+            <button id="btn-test-signed-alert" class="py-2.5 px-3 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 text-xs font-semibold flex items-center justify-center gap-2 border border-emerald-500/40 transition-colors active:scale-95">
+              <span>✍️ Test "Deal Closed" Alert</span>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -654,6 +713,145 @@ create policy "Public can view individual quotes" on public.quotes
       signatureData: null
     };
 
+    // ==========================================
+    // SUPABASE CLOUD DATABASE & REALTIME ENGINE
+    // ==========================================
+    const SUPABASE_URL = 'https://mfwawoclfeiwvpcuchvg.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_3gdPLjujLM-O-Hv3-fo8pQ_YiOwsReI';
+    let supabaseClient = null;
+
+    try {
+      if (window.supabase) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('Supabase client connected successfully');
+      }
+    } catch (err) {
+      console.warn('Supabase initialization warning:', err);
+    }
+
+    async function syncQuoteToCloud(statusOverride = null) {
+      if (!supabaseClient) {
+        console.warn('Supabase client not loaded yet');
+        return;
+      }
+      const calc = calculateTotals();
+      const currentStatus = statusOverride || (appState.isSigned ? 'signed' : 'sent');
+      const syncStatusText = document.getElementById('cloud-sync-status-text');
+
+      if (syncStatusText) syncStatusText.textContent = 'Syncing to Supabase...';
+
+      try {
+        const quotePayload = {
+          quote_number: appState.quoteNumber,
+          category: appState.customer.category,
+          subtotal: calc.baseSubtotal,
+          markup_pct: appState.marginPct,
+          markup_amount: calc.markupAmount,
+          tax_pct: appState.taxPct,
+          tax_amount: calc.taxAmount,
+          total_amount: calc.finalTotal,
+          required_deposit: calc.depositAmount,
+          status: currentStatus,
+          signer_name: appState.isSigned ? appState.customer.name : null,
+          signed_at: appState.isSigned ? new Date().toISOString() : null
+        };
+
+        const { data: quoteRows, error: quoteErr } = await supabaseClient
+          .from('quotes')
+          .upsert(quotePayload, { onConflict: 'quote_number' })
+          .select();
+
+        if (quoteErr) {
+          console.warn('Cloud sync error (quotes):', quoteErr);
+          if (syncStatusText) syncStatusText.textContent = 'Sync notice: ' + (quoteErr.message || 'offline');
+          return;
+        }
+
+        if (quoteRows && quoteRows.length > 0) {
+          const qId = quoteRows[0].id;
+          const itemsToInsert = appState.lineItems.map(item => ({
+            quote_id: qId,
+            description: item.desc,
+            category: item.cat,
+            quantity: item.qty,
+            unit_price: item.unit,
+            line_total: item.qty * item.unit
+          }));
+
+          await supabaseClient.from('quote_items').delete().eq('quote_id', qId);
+          await supabaseClient.from('quote_items').insert(itemsToInsert);
+
+          if (syncStatusText) {
+            const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            syncStatusText.textContent = 'Synced • Just now (' + timeStr + ')';
+          }
+          showToast('☁️ Saved to Supabase cloud database!');
+        }
+      } catch (e) {
+        console.warn('Sync exception:', e);
+        if (syncStatusText) syncStatusText.textContent = 'Cloud sync error';
+      }
+    }
+
+    function initRealtimeCloudAlerts() {
+      if (!supabaseClient) return;
+      try {
+        supabaseClient
+          .channel('public:quotes')
+          .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'quotes' }, (payload) => {
+            if (payload.new && payload.new.status === 'signed' && payload.new.quote_number === appState.quoteNumber) {
+              triggerNativeNotification(
+                '✍️ DEAL CLOSED & E-SIGNED!',
+                appState.customer.name + ' just approved Quote #' + appState.quoteNumber + '! Deposit due: $' + Number(payload.new.required_deposit || 0).toFixed(2)
+              );
+            }
+          })
+          .subscribe();
+      } catch (err) {
+        console.warn('Realtime subscription error:', err);
+      }
+    }
+
+    async function loadQuoteFromUrlParam() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const qParam = urlParams.get('quote');
+      if (!qParam || !supabaseClient) return;
+
+      try {
+        const { data, error } = await supabaseClient
+          .from('quotes')
+          .select('*, quote_items(*)')
+          .eq('quote_number', qParam)
+          .maybeSingle();
+
+        if (data && !error) {
+          appState.quoteNumber = data.quote_number;
+          if (data.category) appState.customer.category = data.category;
+          if (data.markup_pct) appState.marginPct = parseFloat(data.markup_pct);
+          if (data.tax_pct) appState.taxPct = parseFloat(data.tax_pct);
+          if (data.status === 'signed') {
+            appState.isSigned = true;
+          }
+          if (data.quote_items && data.quote_items.length > 0) {
+            appState.lineItems = data.quote_items.map((it, idx) => ({
+              id: it.id || idx,
+              desc: it.description,
+              cat: it.category,
+              qty: parseFloat(it.quantity) || 1,
+              unit: parseFloat(it.unit_price) || 0
+            }));
+          }
+          renderBuilderTable();
+          renderProposalView();
+          switchTab('preview');
+          showToast('Loaded Quote #' + qParam + ' from Supabase!');
+        }
+      } catch (e) {
+        console.warn('URL quote loading error:', e);
+      }
+    }
+
+
     // Helper: Toast Notifications
     function showToast(msg, type = 'success') {
       const container = document.getElementById('toast-container');
@@ -700,6 +898,7 @@ create policy "Public can view individual quotes" on public.quotes
         initSignatureCanvas();
       } else if (targetKey === 'dispatch') {
         renderDispatchView();
+        syncQuoteToCloud('sent');
       }
     }
 
@@ -1102,6 +1301,7 @@ create policy "Public can view individual quotes" on public.quotes
       document.getElementById('signature-status-badge').className = "px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300";
       document.getElementById('signature-status-badge').textContent = "✓ Legally Approved & E-Signed";
       showToast('Proposal Authorized & E-Signed!');
+      syncQuoteToCloud('signed');
     });
 
     // Print Proposal Button
@@ -1114,7 +1314,8 @@ create policy "Public can view individual quotes" on public.quotes
       const calc = calculateTotals();
       const rawPhone = appState.customer.phone.replace(/[^0-9]/g, '');
       const formattedTotal = `$${calc.finalTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-      const proposalUrl = `https://fieldquote.app/q/${appState.quoteNumber}`;
+      const currentOrigin = window.location.origin.includes('github.io') ? 'https://francislandscapefle-hub.github.io/fieldquote/' : window.location.origin + window.location.pathname;
+      const proposalUrl = `${currentOrigin}?quote=${appState.quoteNumber}`;
       
       const smsBody = `Hi ${appState.customer.name.split(' ')[0]}, this is ${appState.contractor.companyName}. It was great walking your project today! Here is your itemized estimate and scope for ${formattedTotal}. You can review and e-sign it on your phone here: ${proposalUrl}`;
 
@@ -1139,7 +1340,8 @@ create policy "Public can view individual quotes" on public.quotes
 
     // Copy Link Only
     document.getElementById('btn-copy-link-only').addEventListener('click', () => {
-      const link = `https://fieldquote.app/q/${appState.quoteNumber}`;
+      const currentOrigin = window.location.origin.includes('github.io') ? 'https://francislandscapefle-hub.github.io/fieldquote/' : window.location.origin + window.location.pathname;
+      const link = `${currentOrigin}?quote=${appState.quoteNumber}`;
       copyToClipboard(link, 'Proposal web link copied to clipboard!');
     });
 
@@ -1178,13 +1380,12 @@ create policy "Public can view individual quotes" on public.quotes
       document.body.removeChild(ta);
     }
 
-  // HTML Escaper for Safety
+    // HTML Escaper for Safety
     function escapeHtml(str) {
       if (!str) return '';
       return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    // ==========================================
     // NATIVE PUSH & IN-APP NOTIFICATION ENGINE
     // ==========================================
     function updateNotificationUI() {
@@ -1200,17 +1401,23 @@ create policy "Public can view individual quotes" on public.quotes
       }
 
       if (Notification.permission === 'granted') {
-        if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+        if (dot) {
+          dot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+        }
         if (text) text.textContent = 'Alerts Active';
         if (btnLabel) btnLabel.textContent = '✓ Alerts Enabled';
         if (statusLabel) statusLabel.textContent = 'Active (Live)';
       } else if (Notification.permission === 'denied') {
-        if (dot) dot.className = 'w-2 h-2 rounded-full bg-red-400';
+        if (dot) {
+          dot.className = 'w-2 h-2 rounded-full bg-red-400';
+        }
         if (text) text.textContent = 'Alerts Blocked';
         if (btnLabel) btnLabel.textContent = 'Alerts Blocked';
         if (statusLabel) statusLabel.textContent = 'Blocked in Settings';
       } else {
-        if (dot) dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
+        if (dot) {
+          dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-pulse';
+        }
         if (text) text.textContent = 'Enable Alerts';
         if (btnLabel) btnLabel.textContent = 'Enable Phone Alerts';
         if (statusLabel) statusLabel.textContent = 'Tap to Enable';
@@ -1219,7 +1426,7 @@ create policy "Public can view individual quotes" on public.quotes
 
     function requestNotificationPermission(onSuccess) {
       if (!('Notification' in window)) {
-        showToast('Push notifications not supported on this browser mode.', 'info');
+        showToast('Push notifications are not supported on this browser mode.', 'info');
         return;
       }
 
@@ -1341,9 +1548,18 @@ create policy "Public can view individual quotes" on public.quotes
       });
     }
 
+    
+    const btnManualSync = document.getElementById('btn-manual-sync');
+    if (btnManualSync) {
+      btnManualSync.addEventListener('click', () => {
+        syncQuoteToCloud('sent');
+      });
+    }
+    initRealtimeCloudAlerts();
+    loadQuoteFromUrlParam();
     updateNotificationUI();
-
     renderBuilderTable();
+
   </script>
 </body>
 </html>
