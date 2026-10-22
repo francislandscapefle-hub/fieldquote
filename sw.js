@@ -1,11 +1,17 @@
-// FieldQuote Service Worker with Offline Caching & Push Notifications
-const CACHE_NAME = 'fieldquote-v2';
+// TradeClose Pro™ Service Worker with Offline Caching & Push Notifications
+const CACHE_NAME = 'tradeclose-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
   './icon-192.png',
-  './icon-512.png'
+  './icon-512.png',
+  './icon-maskable-192.png',
+  './icon-maskable-512.png',
+  './apple-touch-icon.png',
+  './favicon-32x32.png',
+  './favicon-16x16.png',
+  './favicon.ico'
 ];
 
 self.addEventListener('install', (event) => {
@@ -38,10 +44,10 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Native Lock-Screen Push Notifications
+// Push Notification Listener (Native OS Lock-Screen Alerts)
 self.addEventListener('push', (event) => {
   let payload = {
-    title: 'FieldQuote Alert',
+    title: 'TradeClose Pro Alert',
     body: 'New update on your proposal.',
     url: './'
   };
@@ -59,7 +65,10 @@ self.addEventListener('push', (event) => {
     icon: 'icon-192.png',
     badge: 'icon-192.png',
     vibrate: [200, 100, 200],
-    data: { url: payload.url || './' }
+    data: { url: payload.url || './' },
+    actions: [
+      { action: 'open', title: 'Open Proposal' }
+    ]
   };
 
   event.waitUntil(
@@ -67,7 +76,7 @@ self.addEventListener('push', (event) => {
   );
 });
 
-// Open App when Notification is Tapped
+// Notification Click Handler (Brings contractor directly back into app)
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   const targetUrl = (event.notification.data && event.notification.data.url) ? event.notification.data.url : './';
