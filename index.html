@@ -45,8 +45,8 @@
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="font-bold text-lg text-white tracking-tight">FieldQuote</span>
-            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">MVP 1.0</span>
+            <span class="font-bold text-lg text-white tracking-tight" id="app-brand-name">DrivewayBid</span>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30" id="app-brand-badge">TradeYield AI</span>
           </div>
           <p class="text-xs text-slate-400 hidden sm:block">On-Site Driveway Quoting in 60 Seconds</p>
         </div>
@@ -72,9 +72,13 @@
         </button>
       </nav>
 
-      <!-- Notification Quick Status -->
-      <div class="hidden md:flex items-center gap-2 pl-2 border-l border-slate-700/80">
-        <button id="header-notif-btn" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-700/80 hover:bg-slate-700 text-slate-300 flex items-center gap-1.5 transition-all border border-slate-600">
+      <!-- Subscription Trial Status & Alerts -->
+      <div class="flex items-center gap-2 pl-2 border-l border-slate-700/80">
+        <button id="header-trial-btn" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5 transition-all" title="View Subscription Plans">
+          <span class="w-2 h-2 rounded-full bg-emerald-400" id="header-trial-dot"></span>
+          <span id="header-trial-text">14 Days Left (Trial)</span>
+        </button>
+        <button id="header-notif-btn" class="hidden md:flex px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-700/80 hover:bg-slate-700 text-slate-300 items-center gap-1.5 transition-all border border-slate-600">
           <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse" id="header-notif-dot"></span>
           <span id="header-notif-text">Enable Alerts</span>
         </button>
@@ -83,6 +87,19 @@
   </header>
 
   <!-- Main Content Container -->
+    <!-- Expired Trial Alert Banner -->
+  <div id="trial-expired-banner" class="hidden bg-gradient-to-r from-amber-600 via-rose-600 to-amber-700 text-white px-4 py-2.5 text-xs font-medium flex flex-wrap items-center justify-between gap-3 shadow-lg z-30">
+    <div class="flex items-center gap-2">
+      <span class="font-bold text-amber-200">⚠️ 14-Day Free Trial Expired:</span>
+      <span>Upgrade to FieldQuote Pro to continue creating, e-signing, and sending customer proposals.</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button id="btn-banner-upgrade" class="px-3 py-1 bg-white hover:bg-slate-100 text-slate-900 font-bold rounded-lg text-xs shadow transition-all">
+        Subscribe Now ($99/mo or $990/yr)
+      </button>
+    </div>
+  </div>
+
   <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 pb-20">
 
     <!-- ========================================== -->
@@ -136,9 +153,12 @@
           <div class="relative">
             <textarea id="voice-transcript-input" rows="3" class="w-full rounded-xl bg-slate-900/90 border border-slate-700 p-3.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all" placeholder="Tap 'Start Dictation' or type your notes here... (e.g. 'Install 150 feet of 6ft cedar privacy fence, remove old chain link fence, 2 crew members for 2 days, includes post concrete and 1 gate')"></textarea>
             <div class="absolute bottom-3 right-3 flex items-center gap-2">
-              <button id="btn-parse-transcript" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                <span>Parse Into Quote</span>
+              <button id="btn-parse-transcript" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-600 shadow-sm transition-all">
+                <span>Quick Parse</span>
+              </button>
+              <button id="btn-ai-generate-scope" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-purple-600/25 transition-all active:scale-95">
+                <svg class="w-3.5 h-3.5 text-amber-300" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <span>✨ AI Smart Estimate</span>
               </button>
             </div>
           </div>
@@ -151,21 +171,30 @@
           <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
           Customer & Job Details
         </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
           <div>
             <label class="block text-xs font-medium text-slate-400 mb-1">Customer Full Name</label>
             <input type="text" id="cust-name" value="Sarah Jenkins" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
           </div>
           <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Mobile Phone (For Direct SMS)</label>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Mobile Phone (Direct SMS)</label>
             <input type="tel" id="cust-phone" value="(612) 555-0192" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
           </div>
-          <div>
+          <div class="sm:col-span-2 lg:col-span-1">
             <label class="block text-xs font-medium text-slate-400 mb-1">Job Site Address</label>
-            <input type="text" id="cust-address" value="482 Maple Ridge Rd, Buffalo, MN 55313" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <input type="text" id="cust-address" value="482 Maple Ridge Rd, Buffalo, MN 55313" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Street, City, State ZIP">
           </div>
           <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1">Trade / Project Category</label>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-medium text-slate-400">Tax Jurisdiction (50 States)</label>
+              <span id="tax-jurisdiction-hint" class="text-[10px] text-emerald-400 font-semibold font-mono">MN: 7.50%</span>
+            </div>
+            <select id="cust-state" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono">
+              <!-- Dynamically populated 50 States + DC -->
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Trade Category</label>
             <select id="job-category" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500">
               <option value="Landscaping & Hardscape">Landscaping & Hardscape</option>
               <option value="Fencing & Decking" selected>Fencing & Decking</option>
@@ -191,6 +220,22 @@
             <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
             <span>Add Item</span>
           </button>
+        </div>
+
+        <!-- AI Smart Add-Ons & Margin Booster Panel -->
+        <div id="ai-upsell-panel" class="bg-gradient-to-r from-slate-900/90 via-indigo-950/30 to-slate-900/90 border border-indigo-500/30 rounded-xl p-3.5 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+              <span class="text-xs font-bold text-indigo-300 uppercase tracking-wider">AI Upsell Assistant (+20-30% Average Job Size)</span>
+            </div>
+            <button id="btn-refresh-ai-upsells" class="text-[11px] font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 transition-colors">
+              <span>⚡ Refresh AI Suggestions</span>
+            </button>
+          </div>
+          <div id="ai-upsell-chips" class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <!-- Dynamically populated AI Upsell cards with single-click '+ Add to Quote' -->
+          </div>
         </div>
 
         <!-- Table Container -->
@@ -332,6 +377,21 @@
           </div>
         </div>
 
+        <!-- AI Homeowner Scope Narrative & Workmanship Guarantee -->
+        <div class="my-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+              <span class="text-emerald-700 font-bold">★</span> Project Workmanship & Scope Standard
+            </span>
+            <button id="btn-ai-polish-pitch" class="no-print text-xs font-semibold text-emerald-700 hover:text-emerald-800 flex items-center gap-1 transition-colors">
+              <span>✨ Polish with AI</span>
+            </button>
+          </div>
+          <p id="prop-ai-summary" class="text-xs text-slate-600 leading-relaxed italic">
+            "All work executed according to local Minnesota building codes. Includes professional site preparation, commercial-grade fasteners, post depths set for northern freeze-thaw cycles, and a 1-year contractor workmanship guarantee."
+          </p>
+        </div>
+
         <!-- Scope Table -->
         <div class="py-5">
           <table class="w-full text-left text-xs sm:text-sm">
@@ -447,6 +507,25 @@
           </p>
         </div>
 
+        <!-- AI Closer Tone Switcher -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-900/60 border border-slate-700/80">
+          <div class="flex items-center gap-1.5 text-xs font-bold text-slate-300">
+            <span class="text-purple-400">✨ AI Closer Tone:</span>
+            <span class="text-[11px] text-slate-400 font-normal">Choose homeowner pitch angle</span>
+          </div>
+          <div class="flex gap-1.5" id="ai-tone-group">
+            <button class="ai-tone-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition-all shadow-sm" data-tone="warm">
+              🤝 Consultative
+            </button>
+            <button class="ai-tone-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700" data-tone="urgent">
+              ⚡ Fast-Track
+            </button>
+            <button class="ai-tone-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700" data-tone="pro">
+              💼 Commercial B2B
+            </button>
+          </div>
+        </div>
+
         <!-- Mock Smartphone SMS Message Bubble -->
         <div class="bg-slate-900 rounded-2xl border border-slate-700 p-4 sm:p-5 relative">
           <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
@@ -545,6 +624,62 @@
     <!-- TAB 4: BLUEPRINT & SUPABASE SQL SCHEMA -->
     <!-- ========================================== -->
     <div id="tab-settings-view" class="hidden space-y-6">
+
+      <!-- AI Copilot & Trade Intelligence Settings -->
+      <section class="bg-slate-800/80 rounded-2xl border border-slate-700 p-5 sm:p-6 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-700/80">
+          <div>
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-semibold mb-1">
+              Field AI Engine
+            </div>
+            <h2 class="text-base font-bold text-white tracking-tight">AI Estimator & Generative Copilot Settings</h2>
+            <p class="text-xs text-slate-400">Configure offline trade calculation rules or plug in an OpenAI / Gemini API key for dynamic generation.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="ai-mode-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+              ⚡ Built-in Trade AI (Offline Ready)
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">AI Calculation Model</label>
+            <select id="setting-ai-mode" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-purple-500">
+              <option value="builtin" selected>Built-in Contractor Trade Engine (100% Free & Offline)</option>
+              <option value="openai">OpenAI GPT-4o / GPT-4o-mini (Requires API Key)</option>
+              <option value="gemini">Google Gemini 1.5 Flash (Requires API Key)</option>
+            </select>
+            <p class="text-[11px] text-slate-500 mt-1">The built-in engine requires zero API keys and works anywhere on job sites with zero internet.</p>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Optional LLM API Key (OpenAI / Gemini)</label>
+            <input type="password" id="setting-ai-key" placeholder="sk-... (Leave blank to use built-in engine)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 font-mono focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <p class="text-[11px] text-slate-500 mt-1">Stored securely in your device's local browser memory. Never shared with third parties.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs">
+          <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700/60 space-y-1">
+            <span class="text-purple-300 font-bold">1. Voice Scope Takeoff</span>
+            <p class="text-slate-400 text-[11px]">Converts rough field speech into structured materials, labor hours, and disposal line items.</p>
+          </div>
+          <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700/60 space-y-1">
+            <span class="text-purple-300 font-bold">2. Smart Upsell Recommender</span>
+            <p class="text-slate-400 text-[11px]">Analyzes trade scopes to recommend high-margin add-ons that boost job ticket sizes by 20–30%.</p>
+          </div>
+          <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-700/60 space-y-1">
+            <span class="text-purple-300 font-bold">3. Multi-Tone SMS Closer</span>
+            <p class="text-slate-400 text-[11px]">Adapts homeowner proposal text messages between Consultative, Fast-Track, and Corporate tones.</p>
+          </div>
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button id="btn-save-ai-settings" class="px-3.5 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-sm transition-all">
+            Save AI Settings
+          </button>
+        </div>
+      </section>
 
       <!-- Contractor Settings -->
       <section class="bg-slate-800/80 rounded-2xl border border-slate-700 p-5 sm:p-6 shadow-xl space-y-4">
@@ -656,6 +791,217 @@ create policy "Public can view individual quotes" on public.quotes
         </div>
       </section>
 
+            <!-- Brand Clearance & Trademark Protection Center -->
+      <section class="bg-slate-800/80 rounded-2xl border border-slate-700 p-5 sm:p-6 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-700/80">
+          <div>
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-1">
+              Brand Exclusivity & Legal Clearance
+            </div>
+            <h2 class="text-base font-bold text-white tracking-tight">Product Brand & Marketplace Trademark Clearance</h2>
+            <p class="text-xs text-slate-400">Audited across USPTO, Google Play, Apple App Store, and active SaaS registries.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              ✓ 100% Cleared & Available
+            </span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <!-- Left: Conflict Warning -->
+          <div class="bg-rose-950/30 border border-rose-500/30 p-4 rounded-xl space-y-2">
+            <span class="font-bold text-rose-300 flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
+              ⚠️ Collisions Detected on Old Names:
+            </span>
+            <ul class="text-slate-300 space-y-1.5 text-[11px] list-disc list-inside">
+              <li><strong>"FieldQuote"</strong> is actively claimed on Google Play (<code class="text-rose-300">com.prodirt.fieldquote</code>), Apple App Store, and <code class="text-rose-300">fieldquote.io</code>. Submitting it risks immediate store rejection.</li>
+              <li><strong>"TradeIQ"</strong> is actively used by <code class="text-rose-300">tradeiqnow.com</code> and <code class="text-rose-300">tradeiq-systems.com</code>.</li>
+            </ul>
+          </div>
+
+          <!-- Right: Approved Exclusive Brand -->
+          <div class="bg-emerald-950/30 border border-emerald-500/30 p-4 rounded-xl space-y-2">
+            <span class="font-bold text-emerald-300 flex items-center gap-1.5 uppercase tracking-wider text-[11px]">
+              ✓ Cleared Exclusive Trademark:
+            </span>
+            <div class="space-y-1 text-[11px] text-slate-300">
+              <div class="text-sm font-bold text-white">DrivewayBid™ (Powered by TradeYield AI™)</div>
+              <p>• <strong>App Store & Play Store Collision:</strong> 0 existing apps found.</p>
+              <p>• <strong>USPTO Search Clearance:</strong> Clean in Class 009 (Software) & Class 042 (SaaS).</p>
+              <p>• <strong>Parent Consulting Entity:</strong> Apex Trade Dynamics LLC (protects FLE).</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3.5 bg-slate-900/60 rounded-xl border border-slate-700/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+          <span class="text-slate-300">Want to customize the app display name?</span>
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <input type="text" id="setting-app-brand-input" value="DrivewayBid" class="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white font-bold w-full sm:w-44">
+            <button id="btn-save-brand-title" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs whitespace-nowrap transition-all shadow-sm">
+              Update Brand
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SaaS Subscription & Billing Control Center -->
+      <section class="bg-slate-800/80 rounded-2xl border border-slate-700 p-5 sm:p-6 shadow-xl space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-700/80">
+          <div>
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-1">
+              Commercial & Billing Levers
+            </div>
+            <h2 class="text-base font-bold text-white tracking-tight">Contractor SaaS Subscription & Free Trial Center</h2>
+            <p class="text-xs text-slate-400">Manage 14-day trial status, recurring payment links, and test paywall levers.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="settings-sub-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+              14-Day Free Trial
+            </span>
+            <button id="btn-settings-open-upgrade" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-md transition-all">
+              Upgrade / Change Plan
+            </button>
+          </div>
+        </div>
+
+        <!-- Plan Breakdown & Status Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/60 space-y-1">
+            <span class="text-slate-400 font-medium">Current Status:</span>
+            <div id="settings-sub-status-text" class="text-sm font-bold text-white">Active Trial (14 Days Remaining)</div>
+            <p class="text-[11px] text-slate-500">Full access to voice intake, client proposals, and SMS dispatch.</p>
+          </div>
+          <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/60 space-y-1">
+            <span class="text-slate-400 font-medium">Selected Tier & Price:</span>
+            <div id="settings-sub-plan-text" class="text-sm font-bold text-emerald-400 font-mono">$99.00 / month (or $990/yr)</div>
+            <p class="text-[11px] text-slate-500">Includes unlimited estimates & e-signatures.</p>
+          </div>
+          <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/60 space-y-1">
+            <span class="text-slate-400 font-medium">Self-Service Portal:</span>
+            <div>
+              <a id="btn-stripe-portal-link" href="https://billing.stripe.com/p/login/test_portal" target="_blank" class="inline-flex items-center gap-1.5 text-xs text-emerald-400 hover:underline font-semibold mt-0.5">
+                <span>Manage / Cancel in Stripe</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              </a>
+            </div>
+            <p class="text-[11px] text-slate-500">1-click cancel or update payment method anytime.</p>
+          </div>
+        </div>
+
+        <!-- Testing & Developer Simulation Levers -->
+        <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">In-App Trial & Paywall Testing Levers:</span>
+            <span class="text-[11px] text-amber-400 font-mono">Developer & QA Tools</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Use these buttons to instantly simulate expiration and test your paywall without waiting 14 real calendar days:</p>
+          <div class="flex flex-wrap gap-2.5">
+            <button id="btn-test-sim-expired" class="px-3 py-1.5 rounded-lg bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 text-xs font-semibold border border-rose-500/40 transition-colors">
+              ⏳ Simulate Expired Trial (Day 15)
+            </button>
+            <button id="btn-test-reset-trial" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold border border-slate-600 transition-colors">
+              🔄 Reset to Day 1 (14 Days Remaining)
+            </button>
+            <button id="btn-test-sim-pro" class="px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 text-xs font-semibold border border-emerald-500/40 transition-colors">
+              ★ Simulate Active Pro (Paid)
+            </button>
+          </div>
+        </div>
+
+        <!-- Stripe Payment Link Configuration -->
+        <div class="bg-slate-900/40 p-4 rounded-xl border border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Stripe Payment URLs Configuration:</span>
+            <span class="text-[11px] text-emerald-400 font-mono">Direct Web Checkout</span>
+          </div>
+          <p class="text-[11px] text-slate-400">Paste your live Stripe payment links below so contractors are automatically directed to your Stripe checkout:</p>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-[11px] font-medium text-slate-400 mb-1">Monthly Stripe Link ($99/mo)</label>
+              <input type="url" id="setting-stripe-monthly" value="https://buy.stripe.com/test_fieldquote_monthly" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 font-mono">
+            </div>
+            <div>
+              <label class="block text-[11px] font-medium text-slate-400 mb-1">Annual Stripe Link ($990/yr)</label>
+              <input type="url" id="setting-stripe-annual" value="https://buy.stripe.com/test_fieldquote_annual" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 font-mono">
+            </div>
+            <div>
+              <label class="block text-[11px] font-medium text-slate-400 mb-1">Customer Portal Link (Cancel/Update)</label>
+              <input type="url" id="setting-stripe-portal" value="https://billing.stripe.com/p/login/test_portal" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 font-mono">
+            </div>
+          </div>
+          <div class="flex justify-end">
+            <button id="btn-save-stripe-urls" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-sm transition-all">
+              Save Stripe Links
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Legal Compliance Center & Policies -->
+      <section class="bg-slate-800/80 rounded-2xl border border-slate-700 p-5 sm:p-6 shadow-xl space-y-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-semibold mb-1">
+            Statutory & Regulatory Disclosures
+          </div>
+          <h2 class="text-base font-bold text-white tracking-tight">Legal Compliance Center (FTC, ARL & E-Sign Standards)</h2>
+          <p class="text-xs text-slate-400">All applicable federal and state legal disclosures required for multiplatform B2B software billing.</p>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <!-- Accordion 1: Terms of Service -->
+          <details class="group bg-slate-900/60 rounded-xl border border-slate-700/60 overflow-hidden" open>
+            <summary class="px-4 py-3 cursor-pointer font-bold text-slate-200 flex items-center justify-between hover:bg-slate-800/50 transition-colors">
+              <span>1. Software Subscription Terms of Service (B2B SaaS)</span>
+              <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-4 pb-4 pt-1 text-slate-300 space-y-2 border-t border-slate-800 text-[11px] leading-relaxed">
+              <p>• <strong>License Grant:</strong> FieldQuote grants the subscriber a limited, non-exclusive, revocable license to access the quoting platform, generate customer proposals, record digital e-signatures, and dispatch notifications via SMS.</p>
+              <p>• <strong>Independent Contractor Responsibility:</strong> Subscribers represent and warrant that they hold all required state and municipal trade licenses, insurances, and registrations required to perform quoted scopes of work. FieldQuote provides estimating software tools only and is not a party to any agreement between contractor and homeowner.</p>
+              <p>• <strong>Electronic Signatures:</strong> Digital signatures executed via FieldQuote comply with the Electronic Signatures in Global and National Commerce Act (E-SIGN Act, 15 U.S.C. § 7001 et seq.) and the Uniform Electronic Transactions Act (UETA).</p>
+            </div>
+          </details>
+
+          <!-- Accordion 2: Automatic Renewal Policy -->
+          <details class="group bg-slate-900/60 rounded-xl border border-slate-700/60 overflow-hidden" open>
+            <summary class="px-4 py-3 cursor-pointer font-bold text-slate-200 flex items-center justify-between hover:bg-slate-800/50 transition-colors">
+              <span>2. Automatic Renewal & Cancellation Policy (FTC & State ARL Disclosures)</span>
+              <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-4 pb-4 pt-1 text-slate-300 space-y-2 border-t border-slate-800 text-[11px] leading-relaxed">
+              <p>• <strong>Continuous Subscription:</strong> Your subscription automatically renews at the chosen interval ($99/month or $990/year) until canceled. Billing occurs automatically using your on-file payment method on each renewal date.</p>
+              <p>• <strong>FTC Click-to-Cancel Compliance:</strong> In accordance with the FTC Negative Option Rule (16 CFR Part 425), California Automatic Renewal Law (Cal. Bus. & Prof. Code §§ 17600–17606), and Minnesota ARL (Minn. Stat. § 325G.56), subscribers may cancel recurring billing online at any time with 1 click via the Stripe Billing Portal or inside Settings.</p>
+              <p>• <strong>Renewal Notice:</strong> For annual subscriptions, an email notice will be delivered 30 calendar days prior to recurring charges detailing the renewal date, charge amount, and instructions to cancel.</p>
+            </div>
+          </details>
+
+          <!-- Accordion 3: Privacy & Data Protection -->
+          <details class="group bg-slate-900/60 rounded-xl border border-slate-700/60 overflow-hidden">
+            <summary class="px-4 py-3 cursor-pointer font-bold text-slate-200 flex items-center justify-between hover:bg-slate-800/50 transition-colors">
+              <span>3. Data Privacy & Customer Data Protection (CCPA & GDPR Aligned)</span>
+              <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-4 pb-4 pt-1 text-slate-300 space-y-2 border-t border-slate-800 text-[11px] leading-relaxed">
+              <p>• <strong>Customer Data Ownership:</strong> All client names, phone numbers, addresses, and line-item prices entered into FieldQuote remain the exclusive property of the contractor.</p>
+              <p>• <strong>Zero Data Selling:</strong> We do not sell, rent, or monetize your customer records or project estimates to third-party lead brokers.</p>
+              <p>• <strong>Security:</strong> All quote records stored in Supabase PostgreSQL are protected via Row Level Security (RLS) and encrypted in transit via TLS 1.3.</p>
+            </div>
+          </details>
+
+          <!-- Accordion 4: Refund Policy -->
+          <details class="group bg-slate-900/60 rounded-xl border border-slate-700/60 overflow-hidden">
+            <summary class="px-4 py-3 cursor-pointer font-bold text-slate-200 flex items-center justify-between hover:bg-slate-800/50 transition-colors">
+              <span>4. Refund & Cancellation Terms (7-Day Risk-Free Guarantee)</span>
+              <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="px-4 pb-4 pt-1 text-slate-300 space-y-2 border-t border-slate-800 text-[11px] leading-relaxed">
+              <p>• <strong>7-Day Guarantee:</strong> If FieldQuote does not deliver faster quoting and higher close rates in your trade, request a full refund within 7 days of your first payment for a 100% money-back refund.</p>
+              <p>• <strong>Post-Cancellation Access:</strong> Upon cancellation, your account remains active with full Pro features until the conclusion of your current paid billing period.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
       <!-- 7-Day Launch Checklist Card -->
       <section class="bg-slate-800/80 rounded-2xl border border-slate-700 p-5 sm:p-6 shadow-xl space-y-4">
         <h2 class="text-sm font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
@@ -680,6 +1026,148 @@ create policy "Public can view individual quotes" on public.quotes
 
     </div>
 
+    <!-- ========================================== -->
+  <!-- MODAL: FIELDQUOTE PRO SUBSCRIPTION & BILLING -->
+  <!-- ========================================== -->
+  <div id="modal-subscription" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm hidden overflow-y-auto">
+    <div class="relative w-full max-w-2xl bg-slate-900 border border-slate-700/90 rounded-2xl shadow-2xl overflow-hidden my-8">
+      
+      <!-- Modal Header -->
+      <div class="bg-gradient-to-r from-slate-800 to-slate-850 px-6 py-5 border-b border-slate-700/80 flex items-start justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-white shadow-lg shadow-emerald-500/20 font-black text-lg">
+            FQ
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-lg font-bold text-white tracking-tight">FieldQuote Pro Subscription</h2>
+              <span id="modal-badge-status" class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">14-Day Trial</span>
+            </div>
+            <p class="text-xs text-slate-400">Lock in your contractor pricing. Unlimited quotes, real-time alerts & e-signatures.</p>
+          </div>
+        </div>
+        <button id="modal-sub-close-btn" class="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors" title="Close modal">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 space-y-6 max-h-[78vh] overflow-y-auto">
+        
+        <!-- Billing Frequency Selector (Monthly vs Annual) -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">Select Billing Frequency:</span>
+            <span class="text-xs font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">Annual Plan Saves 17% (2 Months Free)</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Monthly Card -->
+            <label id="plan-card-monthly" class="relative flex flex-col p-4 rounded-xl border-2 border-emerald-500 bg-slate-800/80 cursor-pointer transition-all hover:bg-slate-800">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-bold text-sm text-white">Monthly Pro</span>
+                <input type="radio" name="billing_freq" id="radio-monthly" value="monthly" checked class="accent-emerald-500 w-4 h-4 cursor-pointer">
+              </div>
+              <div class="flex items-baseline gap-1">
+                <span class="text-2xl font-extrabold text-white font-mono">$99</span>
+                <span class="text-xs text-slate-400">/ month</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-1">Billed monthly. Cancel anytime with 1 click.</p>
+            </label>
+
+            <!-- Annual Card -->
+            <label id="plan-card-annual" class="relative flex flex-col p-4 rounded-xl border-2 border-slate-700 bg-slate-800/40 cursor-pointer transition-all hover:bg-slate-800">
+              <div class="flex items-center justify-between mb-2">
+                <span class="font-bold text-sm text-white">Annual Pro</span>
+                <input type="radio" name="billing_freq" id="radio-annual" value="annual" class="accent-emerald-500 w-4 h-4 cursor-pointer">
+              </div>
+              <div class="flex items-baseline gap-1">
+                <span class="text-2xl font-extrabold text-emerald-400 font-mono">$990</span>
+                <span class="text-xs text-slate-400">/ year</span>
+              </div>
+              <p class="text-[11px] text-emerald-300/90 mt-1 font-medium">Equal to $82.50/mo. Save $198/year!</p>
+            </label>
+          </div>
+        </div>
+
+        <!-- What's Included Feature List -->
+        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/60 space-y-2.5">
+          <span class="text-xs font-bold text-slate-300 uppercase tracking-wider block">Everything Unlocked With Pro:</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-300">
+            <div class="flex items-center gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span>Unlimited Voice Quoting in 60s</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span>Canvas E-Signature & 50% Deposits</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span>Direct $0 Carrier SMS Dispatch</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span>Real-Time Lock Screen Deal Alerts</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span>Supabase Cloud Database & Backup</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-emerald-400 font-bold">✓</span>
+              <span>Offline PWA Mode (iOS & Android)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mandatory Legal Disclosures (FTC Click-to-Cancel & California/Minnesota ARL Compliant) -->
+        <div class="bg-slate-950/70 p-4 rounded-xl border border-slate-800 text-xs text-slate-400 space-y-2.5 leading-relaxed">
+          <div class="flex items-center gap-2 text-slate-200 font-bold text-[11px] uppercase tracking-wider">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <span>Automatic Renewal & Statutory Billing Disclosure</span>
+          </div>
+          <p id="modal-legal-disclosure">
+            <strong class="text-slate-200">Automatic Renewal Terms:</strong> Your subscription begins immediately upon checkout. You will be billed <span id="disclosure-amount" class="text-emerald-300 font-semibold font-mono">$99.00</span> today, and your subscription will <strong class="text-slate-200">automatically renew</strong> on a recurring <span id="disclosure-cadence" class="text-emerald-300 font-semibold">monthly</span> basis at the then-current rate (+ applicable state/local sales tax) unless you cancel prior to the next billing date.
+          </p>
+          <p>
+            <strong class="text-slate-200">1-Click Cancellation Policy (FTC Click-to-Cancel & ARL Compliant):</strong> You may cancel your subscription at any time with 1 click inside the Blueprint / Settings tab or via the self-service Stripe Customer Billing Portal. Cancellation stops future recurring charges immediately with zero hidden fees. For annual subscriptions, you will receive an email reminder notice 30 days prior to renewal.
+          </p>
+          <p>
+            <strong class="text-slate-200">7-Day Risk-Free Guarantee:</strong> If FieldQuote doesn't speed up your estimating in the field, contact support within 7 days of initial subscription for a 100% full refund.
+          </p>
+          <div class="pt-2 border-t border-slate-800 flex items-start gap-2.5">
+            <input type="checkbox" id="modal-terms-checkbox" checked class="accent-emerald-500 w-4 h-4 mt-0.5 cursor-pointer">
+            <label for="modal-terms-checkbox" class="text-[11px] text-slate-300 cursor-pointer">
+              I agree to the recurring subscription terms above, authorize automatic recurring billing, and accept the <a href="javascript:void(0)" id="link-modal-terms" class="text-emerald-400 underline hover:text-emerald-300">Terms of Service</a> & <a href="javascript:void(0)" id="link-modal-privacy" class="text-emerald-400 underline hover:text-emerald-300">Privacy Policy</a>.
+            </label>
+          </div>
+        </div>
+
+        <!-- Checkout Buttons -->
+        <div class="space-y-3 pt-2">
+          <a id="btn-stripe-checkout" href="https://buy.stripe.com/test_fieldquote_monthly" target="_blank" class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25 transition-all text-center">
+            <svg class="w-5 h-5 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            <span id="btn-stripe-checkout-label">Subscribe Now — $99/mo (Secure Stripe Checkout)</span>
+          </a>
+
+          <!-- Quick Test / Simulation Button for Developer & Field Testing -->
+          <div class="flex items-center justify-between text-xs text-slate-400 px-1">
+            <div class="flex items-center gap-1.5 text-[11px]">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>256-Bit Encrypted • Powered by Stripe</span>
+            </div>
+            <button id="btn-simulate-pro-pay" class="text-xs text-emerald-400 hover:text-emerald-300 underline font-medium">
+              [Testing: Simulate Instant Payment]
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
   </main>
 
   <!-- JavaScript Application Logic -->
@@ -695,6 +1183,7 @@ create policy "Public can view individual quotes" on public.quotes
         name: "Sarah Jenkins",
         phone: "(612) 555-0192",
         address: "482 Maple Ridge Rd, Buffalo, MN 55313",
+        state: "MN",
         category: "Fencing & Decking"
       },
       quoteNumber: "FQ-2026-1049",
@@ -710,7 +1199,22 @@ create policy "Public can view individual quotes" on public.quotes
         { id: 6, desc: "Post hole auger drilling, setting, and fence build labor (2-person crew)", cat: "Labor", qty: 16, unit: 65.00 }
       ],
       isSigned: false,
-      signatureData: null
+      signatureData: null,
+      subscription: {
+        status: 'trial', // 'trial', 'expired', 'pro'
+        trialStartDate: Date.now(),
+        trialDurationDays: 14,
+        billingFrequency: 'monthly', // 'monthly' or 'annual'
+        stripeMonthlyUrl: 'https://buy.stripe.com/test_fieldquote_monthly',
+        stripeAnnualUrl: 'https://buy.stripe.com/test_fieldquote_annual',
+        stripePortalUrl: 'https://billing.stripe.com/p/login/test_portal'
+      },
+      ai: {
+        mode: 'builtin', // 'builtin', 'openai', 'gemini'
+        apiKey: '',
+        selectedTone: 'warm', // 'warm', 'urgent', 'pro'
+        proposalSummary: "All work executed according to local Minnesota building codes. Includes professional site preparation, commercial-grade fasteners, post depths set for northern freeze-thaw cycles, and a 1-year contractor workmanship guarantee."
+      }
     };
 
     // ==========================================
@@ -871,6 +1375,589 @@ create policy "Public can view individual quotes" on public.quotes
       }, 3000);
     }
 
+    
+    // ==========================================
+    // 14-DAY TRIAL & COMMERCIAL BILLING ENGINE
+    // ==========================================
+    
+    // ==========================================
+    // NATIONWIDE 50-STATE TAX ENGINE & DATA
+    // ==========================================
+    const STATE_TAX_DATA = {
+      "AL": { name: "Alabama", rate: 9.29, desc: "State 4.0% + avg local 5.29%" },
+      "AK": { name: "Alaska", rate: 1.82, desc: "No state tax; avg local 1.82%" },
+      "AZ": { name: "Arizona", rate: 8.37, desc: "Transaction privilege tax applies to trades" },
+      "AR": { name: "Arkansas", rate: 9.47, desc: "State 6.5% + avg local 2.97%" },
+      "CA": { name: "California", rate: 8.85, desc: "State 7.25% + mandatory local districts" },
+      "CO": { name: "Colorado", rate: 7.81, desc: "Home-rule city jurisdictions apply" },
+      "CT": { name: "Connecticut", rate: 6.35, desc: "Uniform statewide rate" },
+      "DE": { name: "Delaware", rate: 0.00, desc: "No sales tax" },
+      "DC": { name: "District of Columbia", rate: 6.00, desc: "Standard municipal rate" },
+      "FL": { name: "Florida", rate: 7.02, desc: "State 6.0% + county discretionary surtax" },
+      "GA": { name: "Georgia", rate: 7.38, desc: "State 4.0% + county local options" },
+      "HI": { name: "Hawaii", rate: 4.50, desc: "General Excise Tax (GET) applies to contracting" },
+      "ID": { name: "Idaho", rate: 6.03, desc: "State 6.0% base" },
+      "IL": { name: "Illinois", rate: 8.86, desc: "State 6.25% + city/county local" },
+      "IN": { name: "Indiana", rate: 7.00, desc: "Uniform statewide rate" },
+      "IA": { name: "Iowa", rate: 6.94, desc: "State 6.0% + local option" },
+      "KS": { name: "Kansas", rate: 8.65, desc: "State 6.5% + local jurisdiction" },
+      "KY": { name: "Kentucky", rate: 6.00, desc: "Uniform statewide rate" },
+      "LA": { name: "Louisiana", rate: 9.56, desc: "State 4.45% + local parish tax (highest in US)" },
+      "ME": { name: "Maine", rate: 5.50, desc: "Uniform statewide rate" },
+      "MD": { name: "Maryland", rate: 6.00, desc: "Uniform statewide rate" },
+      "MA": { name: "Massachusetts", rate: 6.25, desc: "Uniform statewide rate" },
+      "MI": { name: "Michigan", rate: 6.00, desc: "Uniform statewide rate" },
+      "MN": { name: "Minnesota", rate: 7.50, desc: "State 6.875% + local transit/county" },
+      "MS": { name: "Mississippi", rate: 7.07, desc: "State 7.0% contractor tax" },
+      "MO": { name: "Missouri", rate: 8.39, desc: "State 4.225% + local sales taxes" },
+      "MT": { name: "Montana", rate: 0.00, desc: "No state sales tax" },
+      "NE": { name: "Nebraska", rate: 6.97, desc: "State 5.5% + city option" },
+      "NV": { name: "Nevada", rate: 8.24, desc: "Clark/Washoe county rates apply" },
+      "NH": { name: "New Hampshire", rate: 0.00, desc: "No state sales tax" },
+      "NJ": { name: "New Jersey", rate: 6.60, desc: "Statewide base 6.625%" },
+      "NM": { name: "New Mexico", rate: 7.72, desc: "Gross Receipts Tax (GRT) covers all contracting" },
+      "NY": { name: "New York", rate: 8.53, desc: "State 4.0% + county/NYC local rate" },
+      "NC": { name: "North Carolina", rate: 7.00, desc: "State 4.75% + county tax" },
+      "ND": { name: "North Dakota", rate: 6.96, desc: "State 5.0% + city local" },
+      "OH": { name: "Ohio", rate: 7.24, desc: "State 5.75% + county transit" },
+      "OK": { name: "Oklahoma", rate: 8.99, desc: "State 4.5% + city/county local" },
+      "OR": { name: "Oregon", rate: 0.00, desc: "No state sales tax" },
+      "PA": { name: "Pennsylvania", rate: 6.34, desc: "State 6.0% (Philly 8%, Allegheny 7%)" },
+      "RI": { name: "Rhode Island", rate: 7.00, desc: "Uniform statewide rate" },
+      "SC": { name: "South Carolina", rate: 7.50, desc: "State 6.0% + county option" },
+      "SD": { name: "South Dakota", rate: 6.11, desc: "Contractor\'s Excise Tax 2% + sales tax" },
+      "TN": { name: "Tennessee", rate: 9.55, desc: "State 7.0% + local option (second highest)" },
+      "TX": { name: "Texas", rate: 8.20, desc: "State 6.25% + local max 2.0%" },
+      "UT": { name: "Utah", rate: 7.25, desc: "State 4.85% + local option" },
+      "VT": { name: "Vermont", rate: 6.36, desc: "State 6.0% + local option" },
+      "VA": { name: "Virginia", rate: 5.77, desc: "State 4.3% + local/regional" },
+      "WA": { name: "Washington", rate: 9.38, desc: "Retail sales tax applies to contracting" },
+      "WV": { name: "West Virginia", rate: 6.57, desc: "State 6.0% + municipality tax" },
+      "WI": { name: "Wisconsin", rate: 5.43, desc: "State 5.0% + county option" },
+      "WY": { name: "Wyoming", rate: 5.44, desc: "State 4.0% + county option" }
+    };
+
+    function populateStateDropdown() {
+      const select = document.getElementById('cust-state');
+      if (!select) return;
+      select.innerHTML = '';
+
+      Object.keys(STATE_TAX_DATA).sort().forEach(code => {
+        const item = STATE_TAX_DATA[code];
+        const opt = document.createElement('option');
+        opt.value = code;
+        opt.textContent = `${code} - ${item.name} (${item.rate.toFixed(2)}%)`;
+        if (code === appState.customer.state) {
+          opt.selected = true;
+        }
+        select.appendChild(opt);
+      });
+    }
+
+    function applyStateTax(code, notifyUser = false) {
+      if (!STATE_TAX_DATA[code]) return;
+      appState.customer.state = code;
+      appState.taxPct = STATE_TAX_DATA[code].rate;
+
+      const slider = document.getElementById('tax-slider');
+      if (slider) slider.value = appState.taxPct;
+
+      const taxLabel = document.getElementById('tax-label');
+      if (taxLabel) taxLabel.textContent = `${appState.taxPct.toFixed(2)}% (${code} Benchmark)`;
+
+      const hint = document.getElementById('tax-jurisdiction-hint');
+      if (hint) hint.textContent = `${code}: ${appState.taxPct.toFixed(2)}%`;
+
+      const select = document.getElementById('cust-state');
+      if (select && select.value !== code) select.value = code;
+
+      updateTotalsUI();
+      if (tabs.preview.view && !tabs.preview.view.classList.contains('hidden')) {
+        renderProposalView();
+      }
+
+      if (notifyUser) {
+        showToast(`Tax rate updated to ${code} standard (${appState.taxPct.toFixed(2)}%)`);
+      }
+    }
+
+    function detectStateFromAddress(addressStr) {
+      if (!addressStr) return;
+      const upper = addressStr.toUpperCase();
+      
+      // Look for standard 2-letter state codes preceded by comma or space
+      for (const code of Object.keys(STATE_TAX_DATA)) {
+        const regex = new RegExp(`[\\s,]${code}[\\s,]|^${code}[\\s,]|[\\s,]${code}$`, 'i');
+        if (regex.test(upper) || upper.includes(STATE_TAX_DATA[code].name.toUpperCase())) {
+          if (appState.customer.state !== code) {
+            applyStateTax(code, true);
+          }
+          break;
+        }
+      }
+    }
+
+    function loadSubscriptionState() {
+      try {
+        const saved = localStorage.getItem('fieldquote_sub_v1');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          appState.subscription = Object.assign(appState.subscription, parsed);
+        } else {
+          appState.subscription.trialStartDate = Date.now();
+          saveSubscriptionState();
+        }
+      } catch (e) {
+        console.warn('Error reading subscription state:', e);
+      }
+
+      if (appState.subscription.status !== 'pro') {
+        const now = Date.now();
+        const elapsedMs = now - appState.subscription.trialStartDate;
+        const elapsedDays = Math.floor(elapsedMs / (1000 * 60 * 60 * 24));
+        const daysRemaining = Math.max(0, appState.subscription.trialDurationDays - elapsedDays);
+        if (daysRemaining <= 0) {
+          appState.subscription.status = 'expired';
+        } else {
+          appState.subscription.status = 'trial';
+        }
+      }
+
+      updateSubscriptionUI();
+    }
+
+    function saveSubscriptionState() {
+      try {
+        localStorage.setItem('fieldquote_sub_v1', JSON.stringify(appState.subscription));
+      } catch (e) {
+        console.warn('Error saving subscription state:', e);
+      }
+    }
+
+    function getTrialDaysRemaining() {
+      const now = Date.now();
+      const elapsedMs = now - appState.subscription.trialStartDate;
+      const elapsedDays = Math.floor(elapsedMs / (1000 * 60 * 60 * 24));
+      return Math.max(0, appState.subscription.trialDurationDays - elapsedDays);
+    }
+
+    function updateSubscriptionUI() {
+      const headerTrialDot = document.getElementById('header-trial-dot');
+      const headerTrialText = document.getElementById('header-trial-text');
+      const headerTrialBtn = document.getElementById('header-trial-btn');
+      const banner = document.getElementById('trial-expired-banner');
+      const settingsBadge = document.getElementById('settings-sub-badge');
+      const settingsStatus = document.getElementById('settings-sub-status-text');
+      const settingsPlan = document.getElementById('settings-sub-plan-text');
+      const modalBadge = document.getElementById('modal-badge-status');
+      const portalLink = document.getElementById('btn-stripe-portal-link');
+
+      const daysLeft = getTrialDaysRemaining();
+
+      if (appState.subscription.status === 'pro') {
+        if (headerTrialDot) headerTrialDot.className = "w-2 h-2 rounded-full bg-emerald-400";
+        if (headerTrialText) headerTrialText.textContent = "★ Pro Active";
+        if (headerTrialBtn) {
+          headerTrialBtn.className = "px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5 transition-all";
+        }
+        if (banner) banner.classList.add('hidden');
+        if (settingsBadge) {
+          settingsBadge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+          settingsBadge.textContent = "FieldQuote Pro (Active)";
+        }
+        if (settingsStatus) settingsStatus.textContent = "Pro Member (Active Subscription)";
+        if (settingsPlan) settingsPlan.textContent = appState.subscription.billingFrequency === 'annual' ? "$990.00 / year (Billed Annually)" : "$99.00 / month (Billed Monthly)";
+        if (modalBadge) {
+          modalBadge.textContent = "Pro Member";
+          modalBadge.className = "px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+        }
+      } else if (appState.subscription.status === 'expired') {
+        if (headerTrialDot) headerTrialDot.className = "w-2 h-2 rounded-full bg-rose-400 animate-ping";
+        if (headerTrialText) headerTrialText.textContent = "⚠️ Trial Expired - Upgrade";
+        if (headerTrialBtn) {
+          headerTrialBtn.className = "px-2.5 py-1 rounded-lg text-xs font-semibold bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 flex items-center gap-1.5 transition-all animate-pulse";
+        }
+        if (banner) banner.classList.remove('hidden');
+        if (settingsBadge) {
+          settingsBadge.className = "px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40";
+          settingsBadge.textContent = "Trial Concluded (Day 15+)";
+        }
+        if (settingsStatus) settingsStatus.textContent = "14-Day Free Trial Expired";
+        if (settingsPlan) settingsPlan.textContent = "Subscription Required ($99/mo or $990/yr)";
+        if (modalBadge) {
+          modalBadge.textContent = "Trial Expired";
+          modalBadge.className = "px-2 py-0.5 rounded-full text-[11px] font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/40";
+        }
+      } else {
+        // Active Trial
+        if (headerTrialDot) headerTrialDot.className = "w-2 h-2 rounded-full bg-emerald-400";
+        if (headerTrialText) headerTrialText.textContent = `${daysLeft} Days Left (Trial)`;
+        if (headerTrialBtn) {
+          headerTrialBtn.className = "px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5 transition-all";
+        }
+        if (banner) banner.classList.add('hidden');
+        if (settingsBadge) {
+          settingsBadge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+          settingsBadge.textContent = "14-Day Free Trial";
+        }
+        if (settingsStatus) settingsStatus.textContent = `Active Trial (${daysLeft} Days Remaining)`;
+        if (settingsPlan) settingsPlan.textContent = "$99.00 / month (or $990/yr)";
+        if (modalBadge) {
+          modalBadge.textContent = `${daysLeft} Days Left in Trial`;
+          modalBadge.className = "px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+        }
+      }
+
+      // Sync Stripe URLs in Settings inputs
+      const monthlyInput = document.getElementById('setting-stripe-monthly');
+      const annualInput = document.getElementById('setting-stripe-annual');
+      const portalInput = document.getElementById('setting-stripe-portal');
+      if (monthlyInput && appState.subscription.stripeMonthlyUrl) monthlyInput.value = appState.subscription.stripeMonthlyUrl;
+      if (annualInput && appState.subscription.stripeAnnualUrl) annualInput.value = appState.subscription.stripeAnnualUrl;
+      if (portalInput && appState.subscription.stripePortalUrl) portalInput.value = appState.subscription.stripePortalUrl;
+      if (portalLink && appState.subscription.stripePortalUrl) portalLink.href = appState.subscription.stripePortalUrl;
+
+      // Update plan selection in modal
+      selectBillingFrequency(appState.subscription.billingFrequency || 'monthly');
+    }
+
+    function selectBillingFrequency(freq) {
+      appState.subscription.billingFrequency = freq;
+      const radioMonthly = document.getElementById('radio-monthly');
+      const radioAnnual = document.getElementById('radio-annual');
+      const cardMonthly = document.getElementById('plan-card-monthly');
+      const cardAnnual = document.getElementById('plan-card-annual');
+      const checkoutBtn = document.getElementById('btn-stripe-checkout');
+      const checkoutLabel = document.getElementById('btn-stripe-checkout-label');
+      const discAmount = document.getElementById('disclosure-amount');
+      const discCadence = document.getElementById('disclosure-cadence');
+
+      if (freq === 'annual') {
+        if (radioAnnual) radioAnnual.checked = true;
+        if (cardAnnual) {
+          cardAnnual.className = "relative flex flex-col p-4 rounded-xl border-2 border-emerald-500 bg-slate-800/80 cursor-pointer transition-all hover:bg-slate-800";
+        }
+        if (cardMonthly) {
+          cardMonthly.className = "relative flex flex-col p-4 rounded-xl border-2 border-slate-700 bg-slate-800/40 cursor-pointer transition-all hover:bg-slate-800";
+        }
+        if (checkoutBtn) checkoutBtn.href = appState.subscription.stripeAnnualUrl || 'https://buy.stripe.com/test_fieldquote_annual';
+        if (checkoutLabel) checkoutLabel.textContent = "Subscribe Annual — $990/yr (Save $198)";
+        if (discAmount) discAmount.textContent = "$990.00";
+        if (discCadence) discCadence.textContent = "annual";
+      } else {
+        if (radioMonthly) radioMonthly.checked = true;
+        if (cardMonthly) {
+          cardMonthly.className = "relative flex flex-col p-4 rounded-xl border-2 border-emerald-500 bg-slate-800/80 cursor-pointer transition-all hover:bg-slate-800";
+        }
+        if (cardAnnual) {
+          cardAnnual.className = "relative flex flex-col p-4 rounded-xl border-2 border-slate-700 bg-slate-800/40 cursor-pointer transition-all hover:bg-slate-800";
+        }
+        if (checkoutBtn) checkoutBtn.href = appState.subscription.stripeMonthlyUrl || 'https://buy.stripe.com/test_fieldquote_monthly';
+        if (checkoutLabel) checkoutLabel.textContent = "Subscribe Monthly — $99/mo (Secure Stripe Checkout)";
+        if (discAmount) discAmount.textContent = "$99.00";
+        if (discCadence) discCadence.textContent = "monthly";
+      }
+    }
+
+    function openSubscriptionModal() {
+      const modal = document.getElementById('modal-subscription');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeSubscriptionModal() {
+      const modal = document.getElementById('modal-subscription');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function enforceTrialGuard(actionName) {
+      if (appState.subscription.status === 'expired') {
+        showToast('14-day free trial expired. Subscribe to continue.', 'info');
+        openSubscriptionModal();
+        return false;
+      }
+      return true;
+    }
+
+    
+    // ==========================================
+    // AI CONTRACTOR ESTIMATING & TRADE ENGINE
+    // ==========================================
+    const TRADE_AI_KNOWLEDGE = {
+      fencing: {
+        category: "Fencing & Decking",
+        summary: "Precision fence installation engineered for northern ground movement and frost heave. Posts set to standard depth in fast-set hydraulic concrete with premium galvanized hardware.",
+        items: [
+          { desc: "Western Red Cedar 6ft Privacy Pickets & 2x4 Stringers", cat: "Materials", qty: 150, unit: 15.25 },
+          { desc: "4x4x8 Pressure-Treated In-Ground Posts & Concrete Bags", cat: "Materials", qty: 22, unit: 28.50 },
+          { desc: "4ft Walk-Through Gate Assembly with Self-Closing Hinges & Latch", cat: "Materials", qty: 1, unit: 210.00 },
+          { desc: "Post hole augering (36-inch depth), post setting & alignment", cat: "Labor", qty: 16, unit: 65.00 },
+          { desc: "Old fence tear-out, chain link removal & landfill disposal", cat: "Disposal", qty: 1, unit: 450.00 }
+        ],
+        upsells: [
+          { desc: "Heavy-Duty Steel Post Inserts (+30-Yr Rot Protection)", cat: "Materials", qty: 22, unit: 32.00, benefit: "Extends post lifespan 3x" },
+          { desc: "Post-Cap Solar LED Pathway Lights (Soft White)", cat: "Materials", qty: 22, unit: 18.50, benefit: "Night ambient lighting" },
+          { desc: "Commercial Clear Wood Sealant & Water Stain Coat", cat: "Labor", qty: 150, unit: 4.50, benefit: "Weatherproofing & UV shield" }
+        ]
+      },
+      patio: {
+        category: "Landscaping & Hardscape",
+        summary: "Commercial-grade hardscape installation utilizing compacted Class-5 aggregate base, geotextile sub-base separation, and polymeric joint stabilization.",
+        items: [
+          { desc: "Excavation and laser subgrade leveling (400 sq ft)", cat: "Labor", qty: 1, unit: 950.00 },
+          { desc: "Class 5 Crushed Limestone Base (6-inch depth compacted)", cat: "Materials", qty: 8, unit: 68.00 },
+          { desc: "Interlocking High-Density Concrete Pavers (400 sq ft)", cat: "Materials", qty: 400, unit: 6.50 },
+          { desc: "Polymeric Joint Sand & Heavy-Duty Edge Restraint Spikes", cat: "Materials", qty: 1, unit: 240.00 },
+          { desc: "Paver lay labor, screeding, and vibratory plate compaction", cat: "Labor", qty: 24, unit: 72.00 }
+        ],
+        upsells: [
+          { desc: "Matching 36-Inch Circular Paver Fire Pit Kit", cat: "Materials", qty: 1, unit: 850.00, benefit: "Outdoor evening gathering" },
+          { desc: "Integrated Low-Voltage LED Step / Hardscape Lighting Kit", cat: "Materials", qty: 1, unit: 750.00, benefit: "Architectural night lighting" },
+          { desc: "Wet-Look Protective Acrylic Paver Sealer Application", cat: "Labor", qty: 400, unit: 1.25, benefit: "Stain & oil resistance" }
+        ]
+      },
+      tree: {
+        category: "Tree Care & Removal",
+        summary: "Safe, ISA-standard tree removal with rigging ropes, climber protection, controlled limb lowering, and deep stump grinding below turf grade.",
+        items: [
+          { desc: "Sectional crane/rigging takedown of mature hazard tree", cat: "Labor", qty: 1, unit: 1750.00 },
+          { desc: "Hydraulic stump grinding (8 inches below turf grade)", cat: "Equipment", qty: 1, unit: 380.00 },
+          { desc: "Heavy branch chipping, log hauling, and jobsite rake finish", cat: "Disposal", qty: 1, unit: 475.00 },
+          { desc: "Turf protection mats and underground utility locate coordination", cat: "Labor", qty: 1, unit: 200.00 }
+        ],
+        upsells: [
+          { desc: "Deep-Root Bio-Stimulant Fertilizer Inoculation for Yard Trees", cat: "Materials", qty: 1, unit: 295.00, benefit: "Boosts root vigor" },
+          { desc: "Topsoil Infill, Tamping, and Bluegrass Seeding Over Stump Area", cat: "Labor", qty: 1, unit: 220.00, benefit: "Full lawn restoration" },
+          { desc: "Canopy Elevation & Deadwood Thinning on Adjacent Shade Tree", cat: "Labor", qty: 2, unit: 180.00, benefit: "Storm damage prevention" }
+        ]
+      },
+      lawn: {
+        category: "Landscaping & Hardscape",
+        summary: "Comprehensive turf revitalizing program featuring double-pass commercial core aeration, certified sun/shade seed cultivars, and deep root starter fertilizer.",
+        items: [
+          { desc: "Commercial Double-Pass Core Aeration (Front & Back Turf)", cat: "Labor", qty: 1, unit: 295.00 },
+          { desc: "Certified Kentucky Bluegrass / Perennial Rye Seed (50 lb bags)", cat: "Materials", qty: 2, unit: 145.00 },
+          { desc: "Slow-Release Starter Fertilizer & Humic Soil Conditioner", cat: "Materials", qty: 1, unit: 195.00 },
+          { desc: "Mechanical slit-seeding calibration and application labor", cat: "Labor", qty: 4, unit: 75.00 }
+        ],
+        upsells: [
+          { desc: "Organic Compost Topdressing Layer (1/4-inch broadcast depth)", cat: "Materials", qty: 4, unit: 85.00, benefit: "Microbial soil boost" },
+          { desc: "Perimeter Shrub Bed Mulch Refresh (Triple-Shred Dark Hardwood)", cat: "Materials", qty: 6, unit: 65.00, benefit: "Weed barrier & moisture" },
+          { desc: "Fall Grub & Lawn Pest Preventative Application", cat: "Materials", qty: 1, unit: 165.00, benefit: "Protects new seedling roots" }
+        ]
+      },
+      deck: {
+        category: "Fencing & Decking",
+        summary: "Custom exterior deck construction engineered to local frost footing requirements, featuring corrosion-resistant structural framing and hidden fasteners.",
+        items: [
+          { desc: "Tear-off and disposal of existing weathered wood deck", cat: "Disposal", qty: 1, unit: 650.00 },
+          { desc: "42-inch helical or sonotube concrete frost footings (8 units)", cat: "Labor", qty: 8, unit: 165.00 },
+          { desc: "Pressure-Treated 2x10 Sub-Framing, Joists, & Joist Tape", cat: "Materials", qty: 1, unit: 1450.00 },
+          { desc: "Premium Composite Deck Boards (16x20 platform - 320 sq ft)", cat: "Materials", qty: 320, unit: 8.50 },
+          { desc: "Decking installation, perimeter picture-framing, & stair build labor", cat: "Labor", qty: 32, unit: 70.00 }
+        ],
+        upsells: [
+          { desc: "Integrated Low-Voltage LED Riser Stair Lights (6 pack)", cat: "Materials", qty: 1, unit: 450.00, benefit: "Night safety & luxury" },
+          { desc: "Cocktail Rail Aluminum Baluster Railing Upgrade", cat: "Materials", qty: 1, unit: 950.00, benefit: "Zero-maintenance modern look" },
+          { desc: "Under-Deck Dry Storage Ceiling Drainage System", cat: "Labor", qty: 1, unit: 1200.00, benefit: "Dry patio below" }
+        ]
+      },
+      roof: {
+        category: "Roofing & Siding",
+        summary: "Complete roof replacement adhering to manufacturer warranty standards with high-temp ice & water shield, synthetic underlayment, and ridge ventilation.",
+        items: [
+          { desc: "Complete tear-off of 1 layer asphalt shingles & dumpster disposal", cat: "Disposal", qty: 25, unit: 55.00 },
+          { desc: "Ice & Water Barrier Membrane (Eaves, Valleys, & Penetrations)", cat: "Materials", qty: 4, unit: 125.00 },
+          { desc: "Architectural 50-Year Limited Lifetime Asphalt Shingles (25 sq)", cat: "Materials", qty: 75, unit: 42.00 },
+          { desc: "Roof installation labor, drip edge flashing, & ridge vent", cat: "Labor", qty: 25, unit: 110.00 }
+        ],
+        upsells: [
+          { desc: "Seamless 5-Inch Aluminum Gutters & Downspouts", cat: "Materials", qty: 140, unit: 9.50, benefit: "Full water diversion" },
+          { desc: "Micro-Mesh Aluminum Gutter Guard Leaf Protection", cat: "Materials", qty: 140, unit: 6.50, benefit: "Zero ladder cleaning" },
+          { desc: "Solar-Powered Attic Ventilation Fan with Thermostat", cat: "Equipment", qty: 1, unit: 550.00, benefit: "Lowers summer AC load" }
+        ]
+      }
+    };
+
+    function runAIEstimator() {
+      const text = document.getElementById('voice-transcript-input').value.trim();
+      const lower = text.toLowerCase();
+      let matchedKey = 'fencing';
+
+      if (lower.includes('patio') || lower.includes('paver') || lower.includes('retaining') || lower.includes('stone') || lower.includes('hardscape')) {
+        matchedKey = 'patio';
+      } else if (lower.includes('tree') || lower.includes('stump') || lower.includes('oak') || lower.includes('limb') || lower.includes('branch') || lower.includes('trim')) {
+        matchedKey = 'tree';
+      } else if (lower.includes('lawn') || lower.includes('seed') || lower.includes('aerat') || lower.includes('sod') || lower.includes('grass')) {
+        matchedKey = 'lawn';
+      } else if (lower.includes('deck') || lower.includes('porch') || lower.includes('trez') || lower.includes('composite')) {
+        matchedKey = 'deck';
+      } else if (lower.includes('roof') || lower.includes('shingle') || lower.includes('gutter') || lower.includes('siding')) {
+        matchedKey = 'roof';
+      } else if (lower.includes('fence') || lower.includes('picket') || lower.includes('cedar') || lower.includes('gate')) {
+        matchedKey = 'fencing';
+      } else if (appState.customer.category) {
+        if (appState.customer.category.includes('Tree')) matchedKey = 'tree';
+        else if (appState.customer.category.includes('Land')) matchedKey = 'patio';
+        else if (appState.customer.category.includes('Roof')) matchedKey = 'roof';
+        else matchedKey = 'fencing';
+      }
+
+      const tradeData = TRADE_AI_KNOWLEDGE[matchedKey];
+      appState.customer.category = tradeData.category;
+      document.getElementById('job-category').value = tradeData.category;
+
+      // Extract custom line items or generate intelligent takeoff
+      const generatedItems = tradeData.items.map((item, idx) => ({
+        id: Date.now() + idx,
+        desc: item.desc,
+        cat: item.cat,
+        qty: item.qty,
+        unit: item.unit
+      }));
+
+      appState.lineItems = generatedItems;
+      appState.ai.proposalSummary = tradeData.summary;
+
+      renderBuilderTable();
+      updateTotalsUI();
+      renderAIUpsells(matchedKey);
+      polishProposalWithAI();
+      renderDispatchView();
+
+      showToast(`✨ AI generated ${generatedItems.length} itemized line items with pricing!`, 'success');
+    }
+
+    function renderAIUpsells(tradeKey = null) {
+      const container = document.getElementById('ai-upsell-chips');
+      if (!container) return;
+
+      let key = tradeKey;
+      if (!key) {
+        const cat = appState.customer.category.toLowerCase();
+        if (cat.includes('tree')) key = 'tree';
+        else if (cat.includes('land')) key = 'patio';
+        else if (cat.includes('roof')) key = 'roof';
+        else if (cat.includes('fence')) key = 'fencing';
+        else key = 'fencing';
+      }
+
+      const trade = TRADE_AI_KNOWLEDGE[key] || TRADE_AI_KNOWLEDGE.fencing;
+      container.innerHTML = '';
+
+      trade.upsells.forEach((up, idx) => {
+        const chip = document.createElement('div');
+        chip.className = "bg-slate-900/90 border border-slate-700/80 hover:border-indigo-500/50 rounded-xl p-3 flex flex-col justify-between transition-all shadow-sm";
+        const lineVal = up.qty * up.unit;
+        
+        chip.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-1 mb-1">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 px-1.5 py-0.5 rounded border border-indigo-500/20">${up.benefit}</span>
+              <span class="text-xs font-mono font-bold text-white">+$${lineVal.toFixed(2)}</span>
+            </div>
+            <div class="text-xs font-medium text-slate-200 line-clamp-2">${escapeHtml(up.desc)}</div>
+          </div>
+          <button data-upsell-idx="${idx}" class="btn-add-ai-upsell mt-2.5 w-full py-1.5 rounded-lg bg-indigo-600/30 hover:bg-indigo-600 text-indigo-200 hover:text-white text-xs font-semibold flex items-center justify-center gap-1 border border-indigo-500/40 transition-all active:scale-95">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>Add to Quote</span>
+          </button>
+        `;
+
+        container.appendChild(chip);
+      });
+
+      // Attach Add Upsell listeners
+      container.querySelectorAll('.btn-add-ai-upsell').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          if (!enforceTrialGuard('add smart AI upsells')) return;
+          const idx = parseInt(e.currentTarget.dataset.upsellIdx);
+          const up = trade.upsells[idx];
+          
+          appState.lineItems.push({
+            id: Date.now(),
+            desc: up.desc,
+            cat: up.cat,
+            qty: up.qty,
+            unit: up.unit
+          });
+
+          renderBuilderTable();
+          updateTotalsUI();
+          polishProposalWithAI();
+          renderDispatchView();
+          showToast(`Added AI Add-On: ${up.desc.substring(0, 28)}... (+$${(up.qty * up.unit).toFixed(2)})`);
+        });
+      });
+    }
+
+    function polishProposalWithAI() {
+      const summaryElem = document.getElementById('prop-ai-summary');
+      if (!summaryElem) return;
+
+      const company = appState.contractor.companyName || "Our crew";
+      const cat = appState.customer.category || "construction";
+      const count = appState.lineItems.length;
+
+      let customSummary = appState.ai.proposalSummary;
+      if (!customSummary || customSummary.length < 10) {
+        customSummary = `${company} engineers every ${cat.toLowerCase()} project for maximum structural longevity and Minnesota weather durability. Scope encompasses ${count} itemized phases including professional site excavation, high-grade materials, and thorough cleanup. All craftsmanship is supported by our 1-year contractor warranty.`;
+      }
+
+      summaryElem.textContent = `"${customSummary}"`;
+    }
+
+    function updateSMSTextByTone(tone) {
+      appState.ai.selectedTone = tone;
+      const calc = calculateTotals();
+      const rawPhone = appState.customer.phone.replace(/[^0-9]/g, '');
+      const formattedTotal = `$${calc.finalTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      const formattedDeposit = `$${calc.depositAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      const currentOrigin = window.location.origin.includes('github.io') ? 'https://francislandscapefle-hub.github.io/fieldquote/' : window.location.origin + window.location.pathname;
+      const proposalUrl = `${currentOrigin}?quote=${appState.quoteNumber}`;
+      const clientFirst = appState.customer.name.split(' ')[0] || "there";
+      const company = appState.contractor.companyName;
+      const cat = appState.customer.category;
+
+      let smsBody = "";
+
+      if (tone === 'urgent') {
+        smsBody = `Hi ${clientFirst}, ${company} here. We just finalized your ${cat} quote for ${formattedTotal}. We have an open crew mobilization slot in your area next week—you can review line items and lock in your installation date here: ${proposalUrl}`;
+      } else if (tone === 'pro') {
+        smsBody = `${appState.customer.name}, please find attached the formal proposal from ${company} regarding the ${cat} project at ${appState.customer.address}. Scope total: ${formattedTotal} (50% deposit: ${formattedDeposit}). View specs and e-sign: ${proposalUrl}`;
+      } else {
+        // Consultative / Warm (Default)
+        smsBody = `Hi ${clientFirst}, this is ${company}. It was great walking your project today! Here is your itemized estimate and scope for ${formattedTotal}. You can review and e-sign it on your phone here: ${proposalUrl}`;
+      }
+
+      document.getElementById('sms-preview-body').textContent = smsBody;
+
+      // Update deep link
+      const encodedBody = encodeURIComponent(smsBody);
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const smsSeparator = isIOS ? '&' : '?';
+      const smsLink = `sms:${rawPhone}${smsSeparator}body=${encodedBody}`;
+
+      const smsBtn = document.getElementById('btn-native-sms-link');
+      if (smsBtn) {
+        smsBtn.setAttribute('href', smsLink);
+        smsBtn.onclick = (e) => {
+          if (!enforceTrialGuard('send client SMS')) {
+            e.preventDefault();
+            return false;
+          }
+        };
+      }
+
+      // Update active tone button styling
+      document.querySelectorAll('.ai-tone-btn').forEach(btn => {
+        if (btn.dataset.tone === tone) {
+          btn.className = "ai-tone-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-emerald-600 text-white transition-all shadow-sm";
+        } else {
+          btn.className = "ai-tone-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all border border-slate-700";
+        }
+      });
+    }
+
     // Tab Navigation Logic
     const tabs = {
       builder: { btn: document.getElementById('nav-builder'), view: document.getElementById('tab-builder-view') },
@@ -907,9 +1994,9 @@ create policy "Public can view individual quotes" on public.quotes
     tabs.dispatch.btn.addEventListener('click', () => switchTab('dispatch'));
     tabs.settings.btn.addEventListener('click', () => switchTab('settings'));
 
-    document.getElementById('btn-proceed-preview').addEventListener('click', () => switchTab('preview'));
+    document.getElementById('btn-proceed-preview').addEventListener('click', () => { if (enforceTrialGuard('view client proposals')) switchTab('preview'); });
     document.getElementById('btn-back-to-builder').addEventListener('click', () => switchTab('builder'));
-    document.getElementById('btn-go-to-dispatch').addEventListener('click', () => switchTab('dispatch'));
+    document.getElementById('btn-go-to-dispatch').addEventListener('click', () => { if (enforceTrialGuard('send client SMS')) switchTab('dispatch'); });
 
     // Financial Calculation Helper
     function calculateTotals() {
@@ -1008,6 +2095,7 @@ create policy "Public can view individual quotes" on public.quotes
 
     // Add New Line Item Button
     document.getElementById('btn-add-item').addEventListener('click', () => {
+      if (!enforceTrialGuard('add new scope line items')) return;
       appState.lineItems.push({
         id: Date.now(),
         desc: "Custom Item / Work Spec",
@@ -1330,6 +2418,12 @@ create policy "Public can view individual quotes" on public.quotes
 
       const smsBtn = document.getElementById('btn-native-sms-link');
       smsBtn.setAttribute('href', smsLink);
+      smsBtn.onclick = (e) => {
+        if (!enforceTrialGuard('send client SMS')) {
+          e.preventDefault();
+          return false;
+        }
+      };
     }
 
     // Copy SMS Text
@@ -1555,10 +2649,256 @@ create policy "Public can view individual quotes" on public.quotes
         syncQuoteToCloud('sent');
       });
     }
+    
+    // ==========================================
+    // SUBSCRIPTION & TRIAL EVENT LISTENERS
+    // ==========================================
+    const headerTrialBtn = document.getElementById('header-trial-btn');
+    if (headerTrialBtn) {
+      headerTrialBtn.addEventListener('click', () => openSubscriptionModal());
+    }
+
+    const bannerUpgradeBtn = document.getElementById('btn-banner-upgrade');
+    if (bannerUpgradeBtn) {
+      bannerUpgradeBtn.addEventListener('click', () => openSubscriptionModal());
+    }
+
+    const settingsUpgradeBtn = document.getElementById('btn-settings-open-upgrade');
+    if (settingsUpgradeBtn) {
+      settingsUpgradeBtn.addEventListener('click', () => openSubscriptionModal());
+    }
+
+    const modalCloseBtn = document.getElementById('modal-sub-close-btn');
+    if (modalCloseBtn) {
+      modalCloseBtn.addEventListener('click', () => closeSubscriptionModal());
+    }
+
+    const cardMonthly = document.getElementById('plan-card-monthly');
+    if (cardMonthly) {
+      cardMonthly.addEventListener('click', () => selectBillingFrequency('monthly'));
+    }
+
+    const cardAnnual = document.getElementById('plan-card-annual');
+    if (cardAnnual) {
+      cardAnnual.addEventListener('click', () => selectBillingFrequency('annual'));
+    }
+
+    const radioMonthly = document.getElementById('radio-monthly');
+    if (radioMonthly) {
+      radioMonthly.addEventListener('change', () => selectBillingFrequency('monthly'));
+    }
+
+    const radioAnnual = document.getElementById('radio-annual');
+    if (radioAnnual) {
+      radioAnnual.addEventListener('change', () => selectBillingFrequency('annual'));
+    }
+
+    const linkModalTerms = document.getElementById('link-modal-terms');
+    if (linkModalTerms) {
+      linkModalTerms.addEventListener('click', () => {
+        closeSubscriptionModal();
+        switchTab('settings');
+      });
+    }
+
+    const linkModalPrivacy = document.getElementById('link-modal-privacy');
+    if (linkModalPrivacy) {
+      linkModalPrivacy.addEventListener('click', () => {
+        closeSubscriptionModal();
+        switchTab('settings');
+      });
+    }
+
+    // Testing Levers (Simulate Expired, Reset, Pro)
+    const btnSimExpired = document.getElementById('btn-test-sim-expired');
+    if (btnSimExpired) {
+      btnSimExpired.addEventListener('click', () => {
+        appState.subscription.status = 'expired';
+        appState.subscription.trialStartDate = Date.now() - (15 * 24 * 60 * 60 * 1000);
+        saveSubscriptionState();
+        updateSubscriptionUI();
+        showToast('Simulating Day 15 (Trial Expired)', 'info');
+        openSubscriptionModal();
+      });
+    }
+
+    const btnResetTrial = document.getElementById('btn-test-reset-trial');
+    if (btnResetTrial) {
+      btnResetTrial.addEventListener('click', () => {
+        appState.subscription.status = 'trial';
+        appState.subscription.trialStartDate = Date.now();
+        saveSubscriptionState();
+        updateSubscriptionUI();
+        showToast('14-day free trial reset to Day 1');
+      });
+    }
+
+    const btnSimPro = document.getElementById('btn-test-sim-pro');
+    if (btnSimPro) {
+      btnSimPro.addEventListener('click', () => {
+        appState.subscription.status = 'pro';
+        saveSubscriptionState();
+        updateSubscriptionUI();
+        showToast('Simulating Active FieldQuote Pro Member!');
+      });
+    }
+
+    const btnSimProPay = document.getElementById('btn-simulate-pro-pay');
+    if (btnSimProPay) {
+      btnSimProPay.addEventListener('click', () => {
+        appState.subscription.status = 'pro';
+        saveSubscriptionState();
+        updateSubscriptionUI();
+        closeSubscriptionModal();
+        showToast('Payment confirmed! Welcome to FieldQuote Pro!');
+      });
+    }
+
+    // Save Stripe URLs in Settings
+    const btnSaveStripe = document.getElementById('btn-save-stripe-urls');
+    if (btnSaveStripe) {
+      btnSaveStripe.addEventListener('click', () => {
+        const m = document.getElementById('setting-stripe-monthly');
+        const a = document.getElementById('setting-stripe-annual');
+        const p = document.getElementById('setting-stripe-portal');
+        if (m) appState.subscription.stripeMonthlyUrl = m.value.trim();
+        if (a) appState.subscription.stripeAnnualUrl = a.value.trim();
+        if (p) appState.subscription.stripePortalUrl = p.value.trim();
+        saveSubscriptionState();
+        updateSubscriptionUI();
+        showToast('Stripe payment links updated successfully!');
+      });
+    }
+
+    // Modal background click to close
+    const modalSub = document.getElementById('modal-subscription');
+    if (modalSub) {
+      modalSub.addEventListener('click', (e) => {
+        if (e.target === modalSub) {
+          closeSubscriptionModal();
+        }
+      });
+    }
+
+    
+    // ==========================================
+    // AI EVENT LISTENERS
+    // ==========================================
+    const btnAIGenerate = document.getElementById('btn-ai-generate-scope');
+    if (btnAIGenerate) {
+      btnAIGenerate.addEventListener('click', () => {
+        if (!enforceTrialGuard('use AI estimating')) return;
+        runAIEstimator();
+      });
+    }
+
+    const btnRefreshUpsells = document.getElementById('btn-refresh-ai-upsells');
+    if (btnRefreshUpsells) {
+      btnRefreshUpsells.addEventListener('click', () => {
+        renderAIUpsells();
+        showToast('Refreshed AI upsell suggestions for current trade');
+      });
+    }
+
+    const btnPolishPitch = document.getElementById('btn-ai-polish-pitch');
+    if (btnPolishPitch) {
+      btnPolishPitch.addEventListener('click', () => {
+        polishProposalWithAI();
+        showToast('✨ Proposal pitch polished with AI!');
+      });
+    }
+
+    // AI Tone Switchers
+    document.querySelectorAll('.ai-tone-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const tone = e.currentTarget.dataset.tone;
+        updateSMSTextByTone(tone);
+        showToast(`AI Closer switched to ${tone.toUpperCase()} tone`);
+      });
+    });
+
+    // Save AI Settings in Tab 4
+    const btnSaveAI = document.getElementById('btn-save-ai-settings');
+    if (btnSaveAI) {
+      btnSaveAI.addEventListener('click', () => {
+        const modeSelect = document.getElementById('setting-ai-mode');
+        const keyInput = document.getElementById('setting-ai-key');
+        if (modeSelect) appState.ai.mode = modeSelect.value;
+        if (keyInput) appState.ai.apiKey = keyInput.value.trim();
+        
+        try {
+          localStorage.setItem('fieldquote_ai_v1', JSON.stringify({
+            mode: appState.ai.mode,
+            apiKey: appState.ai.apiKey
+          }));
+        } catch(e){}
+
+        const badge = document.getElementById('ai-mode-badge');
+        if (badge) {
+          badge.textContent = appState.ai.mode === 'openai' ? '⚡ OpenAI GPT-4o Active' : (appState.ai.mode === 'gemini' ? '⚡ Gemini 1.5 Active' : '⚡ Built-in Trade AI (Offline Ready)');
+        }
+        showToast('AI Estimator settings updated successfully!');
+      });
+    }
+
+    
+    // ==========================================
+    // NATIONWIDE TAX & BRAND LISTENERS
+    // ==========================================
+    const custStateSelect = document.getElementById('cust-state');
+    if (custStateSelect) {
+      custStateSelect.addEventListener('change', (e) => {
+        applyStateTax(e.target.value, true);
+      });
+    }
+
+    const custAddressInput = document.getElementById('cust-address');
+    if (custAddressInput) {
+      custAddressInput.addEventListener('blur', (e) => {
+        detectStateFromAddress(e.target.value);
+      });
+      custAddressInput.addEventListener('change', (e) => {
+        detectStateFromAddress(e.target.value);
+      });
+    }
+
+    // Brand Name Customizer in Settings
+    const btnSaveBrand = document.getElementById('btn-save-brand-title');
+    if (btnSaveBrand) {
+      btnSaveBrand.addEventListener('click', () => {
+        const input = document.getElementById('setting-app-brand-input');
+        if (input && input.value.trim().length > 0) {
+          const newBrand = input.value.trim();
+          document.getElementById('app-brand-name').textContent = newBrand;
+          document.title = `${newBrand} - Rapid Voice-to-Estimate App for Contractors`;
+          try {
+            localStorage.setItem('fieldquote_brand_v1', newBrand);
+          } catch(e){}
+          showToast(`Brand name updated to "${newBrand}"!`);
+        }
+      });
+    }
+
+    // Load saved brand name if exists
+    try {
+      const savedBrand = localStorage.getItem('fieldquote_brand_v1');
+      if (savedBrand) {
+        const brandElem = document.getElementById('app-brand-name');
+        const inputElem = document.getElementById('setting-app-brand-input');
+        if (brandElem) brandElem.textContent = savedBrand;
+        if (inputElem) inputElem.value = savedBrand;
+        document.title = `${savedBrand} - Rapid Voice-to-Estimate App for Contractors`;
+      }
+    } catch(e){}
+
+    populateStateDropdown();
+    loadSubscriptionState();
     initRealtimeCloudAlerts();
     loadQuoteFromUrlParam();
     updateNotificationUI();
     renderBuilderTable();
+    renderAIUpsells();
+    polishProposalWithAI();
 
   </script>
 </body>
